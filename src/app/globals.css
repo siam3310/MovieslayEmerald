@@ -1,0 +1,71 @@
+@import url(https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css);
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: InterVariable, 'Roboto', sans-serif;
+    background-color: #111;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex {
+    display: flex;
+}
+.align {
+    align-items: center;
+}
+.justify {
+    justify-content: center;
+}
+.flex-col {
+    flex-direction: column;
+}
+
+.media-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 70%;
+}
+.media-options a {
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #202025;
+    transition: all 0.3s;
+}
+.media-options a:hover {
+    background-color: #404060;
+    color: #eef;
+}
+.mini-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+.mini-options a {
+    text-decoration: none;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #202025;
+    transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none;
+    }
+    .media-options {
+        width: 100%;
+    }
+}
