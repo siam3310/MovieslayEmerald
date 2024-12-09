@@ -38,22 +38,23 @@ export default function MovieIndex() {
     }
 
     const [search, setSearch] = useState<string>('');
+    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
-    let timeoutId: NodeJS.Timeout;
-
-    const searchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    function searchChanged(e: React.ChangeEvent<HTMLInputElement>) {
         setSearch(e.target.value);
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
-        timeoutId = setTimeout(() => {
+        var t_id = setTimeout(() => {
             updateResults(e.target.value);
-        }, 200);
+        }, 350);
+        setTimeoutId(t_id);
     };
 
     const updateResults = (query: string) => {
+        console.log('Querying for ' + query);
         getSearch(query).then((data) => {
-            setResults(data.results);
+            setResults(data);
         });
     };
 
@@ -81,13 +82,13 @@ export default function MovieIndex() {
                         <Option value="none">Filtering not yet complete</Option>
                     </Select>
                     <Input placeholder="Search for movies or tv shows..." style={{width:'100%'}} onChange={searchChanged} value={search} />
-                    <Button variant="outlined" color="primary" startDecorator={<i className="fa-solid fa-magnifying-glass"/>}>Search</Button>
+                    <Button variant="outlined" color="primary" onClick={()=>{updateResults(search)}} startDecorator={<i className="fa-solid fa-magnifying-glass"/>}>Search</Button>
                 </div>
                 <div className="full-w" style={{height:'20px'}}></div>
                 <span>Search results for: <b>{search}</b></span>
                 <div className="flex gap-1 movie-list">
                     {results?.results.filter(r => r.media_type !== 'person').map((result) => (
-                        <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo(result.id, 'movie') }}>
+                        <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { prompt('a',JSON.stringify(result)); }}>
                             <img src={`https://image.tmdb.org/t/p/w342${result.poster_path}`} alt={getNameOrTitle(result)} />
                             <span>{getNameOrTitle(result)}</span>
                         </div>
