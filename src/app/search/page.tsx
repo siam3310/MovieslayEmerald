@@ -77,9 +77,9 @@ export default function MovieIndex() {
             <div className="flex-align-flex-col list-list">
                 <div className="flex align justify gap-05">
                     <Select placeholder="Filter by...">
-                        {/* <Option value="movie">Movies</Option>
-                        <Option value="tv">TV Shows</Option> */}
-                        <Option value="none">Filtering not yet complete</Option>
+                        <Option value="movie">Movies</Option>
+                        <Option value="tv">TV Shows</Option>
+                        {/* <Option value="none">Filtering not yet complete</Option> */}
                     </Select>
                     <Input placeholder="Search for movies or tv shows..." style={{width:'100%'}} onChange={searchChanged} value={search} />
                     <Button variant="outlined" color="primary" onClick={()=>{updateResults(search)}} startDecorator={<i className="fa-solid fa-magnifying-glass"/>}>Search</Button>
@@ -88,7 +88,7 @@ export default function MovieIndex() {
                 <span>Search results for: <b>{search}</b></span>
                 <div className="flex gap-1 movie-list">
                     {results?.results.filter(r => r.media_type !== 'person').map((result) => (
-                        <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { prompt('a',JSON.stringify(result)); }}>
+                        <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo(result.id, result.media_type) }}>
                             <img src={`https://image.tmdb.org/t/p/w342${result.poster_path}`} alt={getNameOrTitle(result)} />
                             <span>{getNameOrTitle(result)}</span>
                         </div>

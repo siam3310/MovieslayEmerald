@@ -13,7 +13,7 @@ export default function PageLayout({
     var router = useRouter();
 
     function showSearch() {
-        alert("Search is not yet implemented.");
+        router.push('/search');
     }
     return (
         <>
@@ -27,6 +27,7 @@ export default function PageLayout({
                             <a onClick={()=>{router.push("/movie")}}><i className="fa-solid fa-camera-movie"></i> Movies</a>
                             <a onClick={()=>{router.push("/series")}}><i className="fa-solid fa-clapperboard"></i> Shows</a>
                             <a onClick={()=>{router.push("/anime")}}><i className="fa-solid fa-film"></i> Anime</a>
+                            <a onClick={showSearch} className="hide-on-desktop"><i className="fa-solid fa-search"></i></a>
                         </div>
                         <div className="nav-section hide-on-mobile mini-options">
                             <a onClick={()=>{router.push("/")}}><i className="fa-solid fa-home"></i></a>
