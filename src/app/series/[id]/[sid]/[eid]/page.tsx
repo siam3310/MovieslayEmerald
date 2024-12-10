@@ -203,7 +203,7 @@ export default function SeriesPage({ params }: MovieProps) {
                             setFullscreen(false);
                         }}><i className="fa-solid fa-compress"></i> Exit Fullscreen</button>
                     ) : null}
-                    <iframe src={`https://www.2embed.cc/embedtv/${show?.id}?s=${season?.id}&e=${epid}`} style={{marginTop:`${fullscreen ? '2px' : undefined}`}}></iframe>
+                    <iframe sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts" src={`https://www.2embed.cc/embedtv/${show?.id}?s=${season?.id}&e=${epid}`} style={{marginTop:`${fullscreen ? '2px' : undefined}`}}></iframe>
                     <div className={`info-card flex align gap-1`}>
                         <img src={`https://image.tmdb.org/t/p/w342${show?.poster_path}`} />
                         <div className="flex flex-col justify details">
