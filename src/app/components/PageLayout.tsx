@@ -26,15 +26,13 @@ export default function PageLayout({
                         <div className="nav-section media-options">
                             <a onClick={()=>{router.push("/movie")}}><i className="fa-solid fa-camera-movie"></i> Movies</a>
                             <a onClick={()=>{router.push("/series")}}><i className="fa-solid fa-clapperboard"></i> Shows</a>
-                            <a onClick={()=>{router.push("/anime")}}><i className="fa-solid fa-film"></i> Anime</a>
-                            <a onClick={showSearch} className="hide-on-desktop"><i className="fa-solid fa-search"></i></a>
+                            <a onClick={()=>{router.push("/search")}}><i className="fa-solid fa-magnifying-glass"></i> Search</a>
                         </div>
                         <div className="nav-section hide-on-mobile mini-options">
                             <a onClick={()=>{router.push("/")}}><i className="fa-solid fa-home"></i></a>
-                            <a onClick={showSearch}><i className="fa-solid fa-search"></i></a>
                         </div>
                     </Sheet>
-                    <Sheet sx={{px: '10px', display: 'flex', flexDirection:'column', width: 'calc(100% - 20px)', height: 'calc(100% - 60px)', mt: '10px', borderRadius: '12px'}} className={"content"} variant="outlined">
+                    <Sheet sx={{px: '10px', display: 'flex', flexDirection:'column', width: 'calc(100% - 20px)', height: 'calc(100% - 60px)', mt: '10px', borderRadius: '12px', overflowY: 'auto', scrollbarWidth: 'none'}} className={"content"} variant="outlined">
                         {children}
                     </Sheet>
                 </Sheet>

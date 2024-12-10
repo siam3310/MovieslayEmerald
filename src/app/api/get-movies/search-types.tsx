@@ -1,5 +1,5 @@
 export interface MediaType {
-    media_type: 'person' | 'movie' | 'series';
+    media_type: 'person' | 'movie' | 'tv' | 'series';
     adult: boolean;
     original_language: string;
     popularity: number;
@@ -53,9 +53,11 @@ export function getNameOrTitle(media: MediaType): string {
     switch (media.media_type) {
         case 'movie':
             return (media as Movie).title;
-        case 'series':
+        case 'series' || 'tv':
             return (media as TVShow).name;
         case 'person':
             return (media as Person).name;
+        default:
+            return '';
     }
 }

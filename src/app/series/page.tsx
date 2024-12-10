@@ -26,11 +26,15 @@ export interface TMDBShow {
 
 export default function MovieIndex() {
     const [movies, setMovies] = useState<TMDBShow[]>([]);
+    const [trendingShows, setTrendingShows] = useState<TMDBShow[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
 
     useEffect(() => {
         getMovies(1, 'discover-tv').then((data) => {
             setMovies(data.results);
+        });
+        getMovies(1, 'trending-week-tv').then((data) => {
+            setTrendingShows(data.results);
         });
         getMovies(1, 'genres-tv').then((data) => {
             setGenres(data.genres);
@@ -40,7 +44,7 @@ export default function MovieIndex() {
     const router = useRouter();
 
     function goTo(id: number, type: string) {
-        router.push(`/${type}/${id}`);
+        router.push(`/${type.replaceAll('tv','series')}/${id}`);
     }
 
     return (
@@ -60,10 +64,20 @@ export default function MovieIndex() {
             </Sheet>
             <div className="full-w" style={{height:'20px'}}></div>
             <div className="flex-align-flex-col list-list">
-                <b>Top Shows</b>
+                <b>Now Playing Shows</b>
                 <div className="flex gap-1 movie-list">
                     {movies.map((movie) => (
                         <div key={movie.id} className={`movie-card${movie.adult ? ' adult' : ''}`} onClick={()=>{goTo(movie.id, 'series')}}>
+                            <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt={movie.title} />
+                            <span>{movie.title}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="full-w" style={{height:'20px'}}></div>
+                <b>Trending Shows</b>
+                <div className="flex gap-1 movie-list">
+                    {trendingShows.map((movie) => (
+                        <div key={movie.id} className={`movie-card${movie.adult ? ' adult' : ''}`} onClick={()=>{goTo(movie.id, 'movie')}}>
                             <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt={movie.title} />
                             <span>{movie.title}</span>
                         </div>

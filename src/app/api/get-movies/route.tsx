@@ -54,7 +54,15 @@ async function getFromType(type: string, page: number, customKey?: string) {
             return await getMovie(page, customKey);
         case 'tv':
             return await getTV(page, customKey);
-        default:
+        case 'trending-week-movie': 
+            return await useTMDB('trending/movie/week', customKey);
+        case 'trending-week-tv':
+            return await useTMDB('trending/tv/week', customKey);
+        case 'person':
+            return await useTMDB('person/'+page, customKey);
+        case 'person-credits':
+            return await useTMDB('person/'+page+'/combined_credits', customKey);
+        default: // 'discover'
             return await getMovies(page, customKey);
     }
 }

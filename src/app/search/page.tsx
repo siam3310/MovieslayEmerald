@@ -5,7 +5,7 @@ import { WavyBackground } from "../components/aceternity/BackgroundWave";
 import { useEffect, useState } from "react";
 import { getMovies, getSearch } from "../components/useTMDB";
 import { useRouter } from "next/navigation";
-import { getNameOrTitle, SearchResults } from "../api/get-movies/search-types";
+import { getNameOrTitle, Person, SearchResults, TVShow } from "../api/get-movies/search-types";
 
 export interface TMDBMovie {
     id: number;
@@ -34,7 +34,7 @@ export default function MovieIndex() {
     const router = useRouter();
 
     function goTo(id: number, type: string) {
-        router.push(`/${type}/${id}`);
+        router.push(`/${type.replaceAll('tv','series')}/${id}`);
     }
 
     const [search, setSearch] = useState<string>('');
@@ -81,19 +81,44 @@ export default function MovieIndex() {
                         <Option value="tv">TV Shows</Option>
                         {/* <Option value="none">Filtering not yet complete</Option> */}
                     </Select>
-                    <Input placeholder="Search for movies or tv shows..." style={{width:'100%'}} onChange={searchChanged} value={search} />
-                    <Button variant="outlined" color="primary" onClick={()=>{updateResults(search)}} startDecorator={<i className="fa-solid fa-magnifying-glass"/>}>Search</Button>
+                    <Input placeholder="Search for movies or tv shows..." style={{ width: '100%' }} onChange={searchChanged} value={search} />
+                    <Button variant="outlined" color="primary" onClick={() => { updateResults(search) }} startDecorator={<i className="fa-solid fa-magnifying-glass" />}>Search</Button>
                 </div>
-                <div className="full-w" style={{height:'20px'}}></div>
-                <span>Search results for: <b>{search}</b></span>
-                <div className="flex gap-1 movie-list">
-                    {results?.results.filter(r => r.media_type !== 'person').map((result) => (
-                        <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo(result.id, result.media_type) }}>
-                            <img src={`https://image.tmdb.org/t/p/w342${result.poster_path}`} alt={getNameOrTitle(result)} />
-                            <span>{getNameOrTitle(result)}</span>
+                <div className="full-w" style={{ height: '20px' }}></div>
+                <span>{search ? <>Search results for <b>{search}</b>:</> : <>Start typing to see results</>}</span>
+                <div className="full-w" style={{ height: '20px' }}></div>
+                {results ? (
+                    <>
+                        <h2>Movies</h2>
+                        <div className="flex gap-1 movie-list">
+                            {results?.results.filter(r => r.media_type === 'movie' && !r.adult).map((result) => (
+                                <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo(result.id, result.media_type) }}>
+                                    <img src={`https://image.tmdb.org/t/p/w342${result.poster_path}`} alt={getNameOrTitle(result)} />
+                                    <span>{getNameOrTitle(result)} {result.adult ? '(A)' : ''}</span>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                        <h2>TV Shows</h2>
+                        <div className="flex gap-1 movie-list">
+                            {results?.results.filter(r => r.media_type === 'tv' || r.media_type === 'series' && !r.adult).map((result) => (
+                                <div key={result.id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo(result.id, result.media_type) }}>
+                                    <img src={`https://image.tmdb.org/t/p/w342${result.poster_path}`} alt={(result as TVShow).name} />
+                                    <span>{(result as TVShow).name} {result.adult ? '(A)' : ''}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <h2>People</h2>
+                        <div className="flex gap-1 movie-list">
+                        {results?.results.filter(r => r.media_type === 'person').map((result) => (
+                            <div key={(result as Person).id} className={`movie-card${result.adult ? ' adult' : ''}`} onClick={() => { goTo((result as Person).id, (result as Person).media_type) }}>
+                                <img src={(result as Person).profile_path == null ? 'https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png' : `https://image.tmdb.org/t/p/w342${(result as Person).profile_path}`} alt={(result as Person).name} />
+                                <span>{(result as Person).name}</span>
+                            </div>
+                        ))}
+                        </div>
+                    </>
+                ) : (<></>)
+                }
             </div>
         </PageLayout>
     );

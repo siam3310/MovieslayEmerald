@@ -140,10 +140,19 @@ body {
 .movie-page iframe {
     width: calc(80% - 30px);
     height: 60%;
-    margin-top: 20px;
     border-radius: 12px;
+    margin-top: 2px;
     border: none;
     border: 1px solid #32383e50;
+}
+.server.active {
+    background: #252540;
+}
+.server.active:hover {
+    background: #353550;
+}
+.movie-page:not(.fullscreen) iframe {
+    margin-top: 20px;
 }
 .info-card {
     width: 80%;
@@ -164,8 +173,6 @@ body {
     border-radius: 6px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
     gap: 0.5rem;
     background: #222;
     padding: 0.4rem 0.75rem;
@@ -176,6 +183,18 @@ body {
 }
 .hide-on-desktop {
     display: none;
+}
+.details {
+    overflow-y: auto;
+    max-height: 110%;
+    height: 'fit-content';
+    scrollbar-width: thin;
+    scrollbar-color: #202025 #111;
+}
+
+.adult {
+    display: none !important;
+    filter: blur(5px);
 }
 
 @media (max-width: 768px) {

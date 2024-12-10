@@ -29,11 +29,15 @@ export interface Genre {
 
 export default function MovieIndex() {
     const [movies, setMovies] = useState<TMDBMovie[]>([]);
+    const [trendingMovies, setTrendingMovies] = useState<TMDBMovie[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
 
     useEffect(() => {
         getMovies(1).then((data) => {
             setMovies(data.results);
+        });
+        getMovies(1, 'trending-week-movie').then((data) => {
+            setTrendingMovies(data.results);
         });
         getMovies(1, 'genres').then((data) => {
             setGenres(data.genres);
@@ -57,9 +61,19 @@ export default function MovieIndex() {
             </Sheet>
             <div className="full-w" style={{height:'20px'}}></div>
             <div className="flex-align-flex-col list-list">
-                <b>Top Movies</b>
+                <b>Now Playing Movies</b>
                 <div className="flex gap-1 movie-list">
                     {movies.map((movie) => (
+                        <div key={movie.id} className={`movie-card${movie.adult ? ' adult' : ''}`} onClick={()=>{goTo(movie.id, 'movie')}}>
+                            <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt={movie.title} />
+                            <span>{movie.title}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="full-w" style={{height:'20px'}}></div>
+                <b>Trending Movies</b>
+                <div className="flex gap-1 movie-list">
+                    {trendingMovies.map((movie) => (
                         <div key={movie.id} className={`movie-card${movie.adult ? ' adult' : ''}`} onClick={()=>{goTo(movie.id, 'movie')}}>
                             <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt={movie.title} />
                             <span>{movie.title}</span>

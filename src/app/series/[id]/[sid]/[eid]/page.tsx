@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getMovies, getSeasonData } from "../../../../components/useTMDB";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { sources } from "@/app/movie/[id]/page";
 
 interface MovieProps {
     params: Promise<{ id: number, sid: number, eid: number }>;
@@ -192,6 +193,8 @@ export default function SeriesPage({ params }: MovieProps) {
         });
     }, [params]);
 
+    const [source, setSource] = useState<'2embed' | 'smashy' | 'vidsrc'>('vidsrc');
+
     return (
         <PageLayout title={`${show ? `${show.name} S${season?.season_number}E${epid}` : 'Show'}`}>
             <div className={`flex align flex-col ${fullscreen ? '' : 'gap-05'} movie-page${fullscreen ? ' fullscreen' : ''}`} style={{gap:`${fullscreen ? '0px' : '1rem'}`}}>
@@ -199,22 +202,19 @@ export default function SeriesPage({ params }: MovieProps) {
                     <h1>Show not found.</h1>
                 </> : <>
                     {fullscreen ? (
-                        <button style={{marginTop:`${fullscreen ? '2px' : undefined}`,width:'100%'}} className="server thin" onClick={() => {
+                        <button style={{}} className="server thin" onClick={() => {
                             setFullscreen(false);
-                        }}><i className="fa-solid fa-compress"></i> Exit Fullscreen</button>
+                        }}><i className="fa-solid fa-compress"></i> Minimize</button>
                     ) : null}
-                    <iframe sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts" src={`https://www.2embed.cc/embedtv/${show?.id}?s=${season?.id}&e=${epid}`} style={{marginTop:`${fullscreen ? '2px' : undefined}`}}></iframe>
+                    <iframe src={`${sources[source].series}${show?.id}?s=${season?.id}&e=${epid}`} style={{marginTop:`${fullscreen ? '2px' : undefined}`}}></iframe>
                     <div className={`info-card flex align gap-1`}>
                         <img src={`https://image.tmdb.org/t/p/w342${show?.poster_path}`} />
                         <div className="flex flex-col justify details">
-                            <button className="server" style={{width:'fit-content'}} onClick={()=>{
-                                setFullscreen(!fullscreen);
-                            }}><i className="fa-solid fa-expand"></i> Go Fullscreen</button>
                             <b>{show?.name} - S{season?.season_number}E{epid}: {season?.episodes[epid-1].name}</b>
                             <p>{season?.episodes[epid-1].overview}</p>
                         </div>
                         <div className="flex flex-col gap-05 justify servers">
-                            <button className="server" onClick={() => {
+                            {/* <button className="server" onClick={() => {
                                 navigator.clipboard.writeText(window.location.href);
                             }}>
                                 <i className="fa-solid fa-clone"></i>
@@ -231,9 +231,31 @@ export default function SeriesPage({ params }: MovieProps) {
                             }}>
                                 <i className="fa-solid fa-brands fa-twitter"></i>
                                 Tweet
+                            </button> */}
+                            <button className="server" onClick={()=>{
+                                setFullscreen(!fullscreen);
+                            }}><i className="fa-solid fa-expand"></i> Expand</button>
+                            <button className="server" onClick={()=>{
+                                setSource('vidsrc');
+                            }}>
+                                <i className="fa-solid fa-server"></i>
+                                VidSrc
+                            </button>
+                            <button className="server" onClick={()=>{
+                                setSource('2embed');
+                            }}>
+                                <i className="fa-solid fa-server"></i>
+                                2Embed
+                            </button>
+                            <button className="server" onClick={()=>{
+                                setSource('smashy');
+                            }}>
+                                <i className="fa-solid fa-server"></i>
+                                Smashy
                             </button>
                         </div>
                     </div>
+                    <p style={{fontSize:'14px'}}><i className="fa-solid fa-warning" style={{color:"#ff5050",marginRight:'5px'}}></i>An adblocker is reccomended to deter harmful popups (outside of Movieslay's control)</p>
                 </>}
             </div>
         </PageLayout>
